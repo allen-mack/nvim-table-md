@@ -1,2 +1,21 @@
 # nvim-table-md
 Neovim plugin to help with markdown tables
+
+## Setting up the project
+
+- Create GitHub project
+- Clone the project
+- Open Neovim for editing\
+*Note:* Make sure to add current directory to runtime path. Otherwise, Novim does not know how to find you plugin.\
+`nvim --cmd "set rtp+=."`
+- Create Lua module in Lua source directory
+- Create init file and sub modules for the module\
+`touch lua/greetings/init.lua` & `touch lua/greetings/awesome-module.lua`
+
+## Developing
+
+There is an init file in the dev directory.  If you source it like `:luafile dev/init.lua`, it will add a keymap that will reload the modules so that you can test your changes without having to exit and re-enter Neovim.
+
+| name | number |
+| ---  | --- |
+| Obi Wan Kenobi | 123456789 |
