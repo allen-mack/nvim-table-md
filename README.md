@@ -18,4 +18,6 @@ There is an init file in the dev directory.  If you source it like `:luafile dev
 
 | name | number |
 | ---  | --- |
+| Darth Vader | 987654321 |
 | Obi Wan Kenobi | 123456789 |
+

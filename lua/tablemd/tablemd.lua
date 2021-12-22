@@ -1,4 +1,4 @@
-local utils = require('nvim-table-md/utils')
+local utils = require('tablemd/utils')
 local M = {}
 
 --[[
@@ -16,7 +16,7 @@ function M.formatTable()
     -- Get column definitions
     local col_defs = M.get_column_defs(start_line, end_line)
 
-    -- TODO NEXT STEP Format each line
+    -- Format each line
     for i = start_line, end_line do  -- The range includes both ends.
         local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
         local formatted_line = M.get_formatted_line(line, col_defs)
@@ -96,7 +96,7 @@ function M.get_table_range(current_line_number)
     local buf_line_count = vim.api.nvim_buf_line_count(0)
 
     -- Go Up
-    start_line = current_line_number - 1
+    start_line = current_line_number -- - 1
 
     repeat
         current_line = vim.api.nvim_buf_get_lines(0, start_line-1, start_line, false)[1]
@@ -106,12 +106,18 @@ function M.get_table_range(current_line_number)
     start_line = start_line + 2
 
     -- Go down
-    end_line = current_line_number + 1
+    end_line = current_line_number --+ 1
+    current_line = vim.api.nvim_buf_get_lines(0, end_line-1, end_line, false)[1]
 
-    repeat
-        current_line = vim.api.nvim_buf_get_lines(0, end_line, end_line+11, false)[1]
+    while current_line ~= "" and current_line ~= nil and end_line <= buf_line_count do
         end_line = end_line + 1
-    until current_line == "" or end_line >= buf_line_count
+        current_line = vim.api.nvim_buf_get_lines(0, end_line-1, end_line, false)[1]
+    end
+    -- repeat
+    --     current_line = vim.api.nvim_buf_get_lines(0, end_line-1, end_line, false)[1]
+    --     end_line = end_line + 1
+    --     print(end_line)
+    -- until current_line == "" or current_line == nil or end_line >= buf_line_count
 
     end_line = end_line - 1
 
