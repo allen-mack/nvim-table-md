@@ -69,7 +69,7 @@ function M.get_column_defs(s, e)
                 if str_len > defs[k]["length"] then
                     defs[k]["length"] = str_len
                 end
-                -- if we haven't already set the alignmentj 
+                -- if we haven't already set the alignment
                 if defs[k]["align"] == nil then
                     defs[k]["align"] = alignment
                 end
@@ -132,11 +132,6 @@ function M.get_table_range(current_line_number)
         end_line = end_line + 1
         current_line = vim.api.nvim_buf_get_lines(0, end_line-1, end_line, false)[1]
     end
-    -- repeat
-    --     current_line = vim.api.nvim_buf_get_lines(0, end_line-1, end_line, false)[1]
-    --     end_line = end_line + 1
-    --     print(end_line)
-    -- until current_line == "" or current_line == nil or end_line >= buf_line_count
 
     end_line = end_line - 1
 
