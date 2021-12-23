@@ -12,20 +12,26 @@ function M.pad_string(input, len, alignment)
 
     local space_count = len - string.len(input);
 
-    if alignment == 'left' then
-        input = input .. string.rep(" ", space_count)
-    elseif alignment == 'right' then
-        input = string.rep(" ", space_count) .. input
-    elseif alignment == 'center' then
-        if space_count > 0 then
-            local left_spaces = math.ceil(space_count / 2)
-            local right_spaces = space_count - left_spaces
-            input = string.rep(" ", left_spaces) .. input .. string.rep(" ", right_spaces)
-        end
-    else
-        -- If we don't know the alignment, then treat it as left justified.
-        input = input .. string.rep(" ", space_count)
+    -- default the spacing to a left justification
+    local left_spaces = 0
+    local right_spaces = space_count
+    
+    -- if the alignment is 'right' then put all the space on the left side of the string.
+    if alignment == 'right' then
+        left_spaces = space_count
+        right_spaces = 0
     end
+
+    -- If the alignment is 'center', split the space between the left and right.
+    -- For uneven splits, put the extra space on the right side of the string.
+    if alignment == 'center' then
+        if space_count > 0 then
+            local left_spaces = math.floor(space_count / 2)
+            local right_spaces = space_count - left_spaces
+        end
+    end
+
+    input = string.rep(" ", left_spaces) .. input .. string.rep(" ", right_spaces)
 
     return input
 end
