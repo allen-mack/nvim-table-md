@@ -46,14 +46,32 @@ function M.get_column_defs(s, e)
 
         -- For each column
         for k, v in ipairs(t) do
-            local str_len = string.len(utils.trim_string(v))
+            local trimmed_str = utils.trim_string(v)
+            local str_len = string.len(trimmed_str)
+            local alignment = nil
+
+            -- look for alignment indicators
+            if string.match(trimmed_str, "^-+:$") then
+                alignment = 'right'
+            elseif string.match(trimmed_str, "^:[-]+:$") then
+                alignment = 'center'
+            elseif string.match(trimmed_str, "^:-+$") or string.match(trimmed_str, "^-+$") then
+                alignment = 'left'
+            else
+                alignment = nil 
+            end
+
             -- if the sub table doesn't already exist, then add it
             if defs[k] == nil then
-                table.insert(defs, k, {length = str_len, align = "left"})
+                table.insert(defs, k, {length = str_len, align = alignment})
             else
                 -- update the object if the length is greater
                 if str_len > defs[k]["length"] then
                     defs[k]["length"] = str_len
+                end
+                -- if we haven't already set the alignmentj 
+                if defs[k]["align"] == nil then
+                    defs[k]["align"] = alignment
                 end
             end
         end
@@ -74,7 +92,8 @@ function M.get_formatted_line(line, col_defs)
 
     for k, v in ipairs(t) do
         local col_width = col_defs[k]["length"]
-        local padded_str = utils.pad_string(utils.trim_string(v), col_width)
+        local col_align = col_defs[k]["align"]
+        local padded_str = utils.pad_string(utils.trim_string(v), col_width, col_align)
         build_str = build_str .. padded_str .. " | "
     end
 

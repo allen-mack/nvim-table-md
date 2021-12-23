@@ -16,8 +16,10 @@ Neovim plugin to help with markdown tables
 
 There is an init file in the dev directory.  If you source it like `:luafile dev/init.lua`, it will add a keymap that will reload the modules so that you can test your changes without having to exit and re-enter Neovim.
 
-| name | number |
-| ---  | --- |
-| Darth Vader | 987654321 |
-| Obi Wan Kenobi | 123456789 |
+| name | character homeworld | height |
+| ---  | :---: | ---: |
+| Luke Skywalker | Tatooine | 172 |
+| C-3PO | Tatooine | 167 |
+| R2-D2 | Naboo | 96 |
+| Leia Organa | Alderaan | 150 |
 

@@ -6,10 +6,26 @@ Pad string
 @tparam int len The expected length of the return value.
 @treturn string String padded with spaces.
 ]]
-function M.pad_string(input, len)
+function M.pad_string(input, len, alignment)
+    -- Treat alignment as an optional paramenter with a default value
+    alignment = alignment or 'left'
+
     local space_count = len - string.len(input);
 
-    input = input .. string.rep(" ", space_count)
+    if alignment == 'left' then
+        input = input .. string.rep(" ", space_count)
+    elseif alignment == 'right' then
+        input = string.rep(" ", space_count) .. input
+    elseif alignment == 'center' then
+        if space_count > 0 then
+            local left_spaces = math.ceil(space_count / 2)
+            local right_spaces = space_count - left_spaces
+            input = string.rep(" ", left_spaces) .. input .. string.rep(" ", right_spaces)
+        end
+    else
+        -- If we don't know the alignment, then treat it as left justified.
+        input = input .. string.rep(" ", space_count)
+    end
 
     return input
 end
