@@ -27,6 +27,65 @@ function M.formatTable()
 end
 
 --[[--
+Formats each line in the table with a new column.
+@tparam bool before If true, the column will be inserted on the left side of the current column
+]]
+function M.insertColumn(before)
+    local start_line = nil
+    local end_line = nil
+    local cursor_location = vim.api.nvim_win_get_cursor(0)
+
+    -- Get the range of lines to format
+    start_line, end_line = M.get_table_range(cursor_location[1])
+
+    -- Get column definitions
+    local col_defs = M.get_column_defs(start_line, end_line)
+
+    -- Get the current column index
+    local current_col = get_current_column_index()
+
+    -- Format each line
+    for i = start_line, end_line do  -- The range includes both ends.
+        local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+        
+        local t = utils.split_string(line, "|")
+
+        local new_line = "|"
+        local table_len = 0
+        for _ in pairs(t) do table_len = table_len + 1 end
+
+        print("Table Range", 1, table_len)
+        for j = 1, table_len do
+            new_line = new_line .. utils.trim_string(t[j]) .. " | "
+            if j == current_col then
+                if i == start_line + 1 then
+                    new_line = new_line .. "--- | "
+                else
+                    new_line = new_line .. "    | "
+                end
+            end
+        end
+
+        -- replace the line with the formatted line in the buffer
+        vim.api.nvim_buf_set_lines(0, i-1, i, false, {new_line})
+    end
+    
+    -- M.formatTable()
+end
+
+function get_column_boundaries(line, col_index)
+
+    local count = 0
+    while count <= col_index+1 do
+    end
+    for i in line:gmatch("|") do
+        count = count + 1
+    end
+    
+    return count
+end
+
+--[[--
 Returns a table with the max column widths and alignment information.
 @tparam int s The first line of the table
 @tparam int e The last line of the table
@@ -78,6 +137,25 @@ function M.get_column_defs(s, e)
     end
 
     return defs
+end
+
+--[[--
+Determines which column the cursor is currently in.
+@treturn int The column index. This is Lua, so it is 1 based.
+]]
+function get_current_column_index() 
+    print(vim.inspect(cursor_location))
+    local cursor_location = vim.api.nvim_win_get_cursor(0)
+    local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, cursor_location[1]-1, cursor_location[1], false)[1])
+    line = string.sub(line, 1, cursor_location[2]-1)
+    print(line)
+
+    local count = 0
+    for i in line:gmatch("|") do
+        count = count + 1
+    end
+    
+    return count
 end
 
 --[[--

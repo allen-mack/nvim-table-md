@@ -1,7 +1,18 @@
 # nvim-table-md
 Neovim plugin to help with markdown tables
 
-## Setting up the project
+## Key Maps
+
+| Key        | Behavior                              |
+| ---        | ---                                   |
+| <Leader>tc | Add column to the right of the cursor |
+| <Leader>tf | Format the table                      |
+
+## Developing
+
+There is an init file in the dev directory.  If you source it like `:luafile dev/init.lua`, it will add a keymap that will reload the modules so that you can test your changes without having to exit and re-enter Neovim.
+
+### Setting up the project
 
 - Create GitHub project
 - Clone the project
@@ -11,15 +22,3 @@ Neovim plugin to help with markdown tables
 - Create Lua module in Lua source directory
 - Create init file and sub modules for the module\
 `touch lua/greetings/init.lua` & `touch lua/greetings/awesome-module.lua`
-
-## Developing
-
-There is an init file in the dev directory.  If you source it like `:luafile dev/init.lua`, it will add a keymap that will reload the modules so that you can test your changes without having to exit and re-enter Neovim.
-
-| name | character homeworld | height |
-| ---  | :---: | ---: |
-| Luke Skywalker | Tatooine | 172 |
-| C-3PO | Tatooine | 167 |
-| R2-D2 | Naboo | 96 |
-| Leia Organa | Alderaan | 150 |
-
