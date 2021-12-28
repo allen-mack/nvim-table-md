@@ -3,10 +3,10 @@ Neovim plugin to help with markdown tables
 
 ## Key Maps
 
-| Key        | Behavior                              |
-| ---        | ---                                   |
-| <Leader>tc | Add column to the right of the cursor |
-| <Leader>tf | Format the table                      |
+| Key          | Behavior                              |
+| ---          | ---                                   |
+| \<Leader\>tc | Add column to the right of the cursor |
+| \<Leader\>tf | Format the table                      |
 
 ## Developing
 
