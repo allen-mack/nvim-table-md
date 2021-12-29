@@ -54,7 +54,6 @@ function M.insertColumn(before)
         local table_len = 0
         for _ in pairs(t) do table_len = table_len + 1 end
 
-        print("Table Range", 1, table_len)
         for j = 1, table_len do
             new_line = new_line .. utils.trim_string(t[j]) .. " | "
             if j == current_col then
@@ -70,6 +69,32 @@ function M.insertColumn(before)
         vim.api.nvim_buf_set_lines(0, i-1, i, false, {new_line})
     end
     
+    M.formatTable()
+end
+
+--[[--
+Inserts a new row into the table
+@tparam bool before If true, the row will be inserted above the current row
+]]
+function M.insertRow(before) 
+    -- Get the current location of the cursor
+    local cursor_location = vim.api.nvim_win_get_cursor(0)
+    print(vim.inspect(cursor_location))
+    local line_num = cursor_location[1]
+
+    local col_defs = M.get_column_defs(line_num, line_num)
+    local new_line = "|"
+
+    for k, v in ipairs(col_defs) do
+        new_line = new_line .. "   |"
+    end
+
+    -- To insert a line, pass in the same line number for both start and end.
+    vim.api.nvim_buf_set_lines(0, line_num, line_num, false, {new_line})
+
+    -- Move the cursor to the newly created line
+    vim.api.nvim_win_set_cursor(0, {line_num + 1, cursor_location[2]})
+
     M.formatTable()
 end
 
@@ -100,8 +125,6 @@ function M.get_column_defs(s, e)
         -- Read the line from the buffer
         -- local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
         local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, i-1, i, false)[1])
-
-        print("$" .. line .. "$")
 
         -- Split the line by the pipe symbol
         local t = utils.split_string(line, "|")
@@ -147,11 +170,9 @@ Determines which column the cursor is currently in.
 @treturn int The column index. This is Lua, so it is 1 based.
 ]]
 function get_current_column_index() 
-    print(vim.inspect(cursor_location))
     local cursor_location = vim.api.nvim_win_get_cursor(0)
     local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, cursor_location[1]-1, cursor_location[1], false)[1])
     line = string.sub(line, 1, cursor_location[2]-1)
-    print(line)
 
     local count = 0
     for i in line:gmatch("|") do
@@ -169,7 +190,6 @@ Returns the formatted line
 ]]
 function M.get_formatted_line(line, col_defs)
     local t = utils.split_string(line, "|")
-    print(vim.inspect(t))
     local build_str = "| "
 
     for k, v in ipairs(t) do
