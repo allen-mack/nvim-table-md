@@ -89,6 +89,11 @@ function M.insertRow(before)
         new_line = new_line .. "   |"
     end
 
+    -- If 'before' is true, then insert the row above the current row.
+    if before then
+        line_num = line_num - 1
+    end
+
     -- To insert a line, pass in the same line number for both start and end.
     vim.api.nvim_buf_set_lines(0, line_num, line_num, false, {new_line})
 

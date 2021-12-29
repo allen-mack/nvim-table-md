@@ -7,6 +7,7 @@ Neovim plugin to help with markdown tables
 | ---          | ---                                   |
 | \<Leader\>tc | Add column to the right of the cursor |
 | \<Leader\>tf | Format the table                      |
+| \<Leader\>tR | Add row above the current line        |
 | \<Leader\>tr | Add row below the current line        |
 
 ## Developing
