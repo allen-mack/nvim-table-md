@@ -18,7 +18,7 @@ function M.formatTable()
 
     -- Format each line
     for i = start_line, end_line do  -- The range includes both ends.
-        local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+        local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, i-1, i, false)[1])
         local formatted_line = M.get_formatted_line(line, col_defs)
 
         -- replace the line with the formatted line in the buffer
@@ -46,7 +46,7 @@ function M.insertColumn(before)
 
     -- Format each line
     for i = start_line, end_line do  -- The range includes both ends.
-        local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+        local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, i-1, i, false)[1])
         
         local t = utils.split_string(line, "|")
 
@@ -70,7 +70,7 @@ function M.insertColumn(before)
         vim.api.nvim_buf_set_lines(0, i-1, i, false, {new_line})
     end
     
-    -- M.formatTable()
+    M.formatTable()
 end
 
 function get_column_boundaries(line, col_index)
@@ -98,7 +98,10 @@ function M.get_column_defs(s, e)
 
     for i = s, e do
         -- Read the line from the buffer
-        local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+        -- local line = vim.api.nvim_buf_get_lines(0, i-1, i, false)[1]
+        local line = utils.trim_string(vim.api.nvim_buf_get_lines(0, i-1, i, false)[1])
+
+        print("$" .. line .. "$")
 
         -- Split the line by the pipe symbol
         local t = utils.split_string(line, "|")
@@ -166,6 +169,7 @@ Returns the formatted line
 ]]
 function M.get_formatted_line(line, col_defs)
     local t = utils.split_string(line, "|")
+    print(vim.inspect(t))
     local build_str = "| "
 
     for k, v in ipairs(t) do
