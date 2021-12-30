@@ -29,6 +29,45 @@ function M.formatTable()
 end
 
 --[[--
+Deletes the current column from the table.
+]]
+function M.deleteColumn()
+    local start_line = nil
+    local end_line = nil
+    local cursor_location = vim.api.nvim_win_get_cursor(0)
+
+    -- Get the range of lines to format
+    start_line, end_line = tu.get_table_range(cursor_location[1])
+
+    -- Get column definitions
+    local col_defs = tu.get_column_defs(start_line, end_line)
+
+    -- Get the current column index
+    local current_col = tu.get_current_column_index()
+
+    -- Format each line
+    for i = start_line, end_line do 
+        local line = su.trim_string(vim.api.nvim_buf_get_lines(0, i-1, i, false)[1])
+        local t = su.split_string(line, "|")
+
+        local new_line = "|"
+        local table_len = 0
+        for _ in pairs(t) do table_len = table_len + 1 end
+
+        for j = 1, table_len do
+            if j ~= current_col then
+                new_line = new_line .. su.trim_string(t[j]) .. " | "
+            end
+        end
+
+        -- replave the line with the formatted line in the buffer
+        vim.api.nvim_buf_set_lines(0, i-1, i, false, {new_line})
+    end
+
+    M.formatTable()
+end
+
+--[[--
 Formats each line in the table with a new column.
 @tparam bool before If true, the column will be inserted on the left side of the current column
 ]]

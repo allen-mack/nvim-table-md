@@ -4,7 +4,7 @@
 
 Here's a table that could look prettier. Use `<Leader>tf` to format the table.
 
-| name | character homeworld | height | 
+| name | character homeworld | height |
 | ---  | :---: | ---: |
 | Luke Skywalker | Tatooine | 172 |
 | C-3PO | Tatooine | 167 |
