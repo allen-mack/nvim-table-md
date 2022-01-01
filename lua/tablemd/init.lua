@@ -1,4 +1,5 @@
 local table_md = require('tablemd.tablemd')
+print('TESTING')
 
 --[[ MAP KEYS ]]--
 vim.api.nvim_set_keymap("n", "<Leader>tf", ':lua require("tablemd").format()<cr>', { noremap = true })

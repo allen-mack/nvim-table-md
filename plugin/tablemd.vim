@@ -1,12 +1,8 @@
-if exists('g:loaded_tablemd') | finish | endif " prevent loading file twice
+fun! Tablemd()
+    lua for k in pairs(package.loaded) do if k:match("^nvim%-table%-md") then package.loaded[k] = nil end end
+    lua require("tablemd")
+endfun
 
-let s:save_cpo = &cpo " save user coptions
-set cpo&vim " reset them to defaults
-
-" command to run our plugin
-command! Tablemd lua require('tablemd')
-
-let &cpo = s:save_cpo " and restore after
-unlet s:save_cpo
-
-let g:loaded_tablemd = 1
+augroup Tablemd
+    autocmd!
+augroup END
