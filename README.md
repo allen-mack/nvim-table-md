@@ -1,5 +1,6 @@
 # nvim-table-md
-Neovim plugin to help with markdown tables
+
+Neovim plugin to help with markdown tables.
 
 ## Key Maps
 
@@ -10,6 +11,16 @@ Neovim plugin to help with markdown tables
 | \<Leader\>tf | Format the table                      |
 | \<Leader\>tR | Add row above the current line        |
 | \<Leader\>tr | Add row below the current line        |
+
+Until I can figure out how to assign these keybindings only to markdown files, just add the following to your `after/ftplugin/markdown.lua` file. Of course, you can change these to whatever keybindings you like.
+
+```
+vim.api.nvim_set_keymap("n", "<Leader>tf", ':lua require("tablemd").format()<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tc", ':lua require("tablemd").insertColumn(false)<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>td", ':lua require("tablemd").deleteColumn()<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tr", ':lua require("tablemd").insertRow(false)<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tR", ':lua require("tablemd").insertRow(true)<cr>', { noremap = true })
+```
 
 ## Developing
 
