@@ -95,14 +95,27 @@ function M.insertColumn(before)
         local table_len = 0
         for _ in pairs(t) do table_len = table_len + 1 end
 
+        -- This code gets "duplicated" in the next loop, so it is encapsulated in a function here.
+        local insertBlankColumn = function(new_line, start_line, i) 
+            if i == start_line + 1 then
+                new_line = new_line .. "--- | "
+            else
+                new_line = new_line .. "    | "
+            end
+
+            return new_line
+        end
+
+        -- Loop through every column in the table line.
         for j = 1, table_len do
+            if before == true and j == current_col then
+                new_line = insertBlankColumn(new_line, start_line, i)
+            end
+
             new_line = new_line .. su.trim_string(t[j]) .. " | "
-            if j == current_col then
-                if i == start_line + 1 then
-                    new_line = new_line .. "--- | "
-                else
-                    new_line = new_line .. "    | "
-                end
+
+            if before == false and j == current_col then
+                new_line = insertBlankColumn(new_line, start_line, i)
             end
         end
 
@@ -146,7 +159,8 @@ end
 
 function M.setKeyMap()
     vim.api.nvim_set_keymap("n", "<Leader>tf", ':lua require("tablemd").format()<cr>', { noremap = true })
-    vim.api.nvim_set_keymap("n", "<Leader>tc", ':lua require("tablemd").insertColumn(false)<cr>', { noremap = true })
+    vim.api.nvim_set_keymap("n", "<Leader>tC", ':lua require("tablemd").insertColumn(false)<cr>', { noremap = true })
+    vim.api.nvim_set_keymap("n", "<Leader>tc", ':lua require("tablemd").insertColumn(true)<cr>', { noremap = true })
     vim.api.nvim_set_keymap("n", "<Leader>td", ':lua require("tablemd").deleteColumn()<cr>', { noremap = true })
     vim.api.nvim_set_keymap("n", "<Leader>tr", ':lua require("tablemd").insertRow(false)<cr>', { noremap = true })
     vim.api.nvim_set_keymap("n", "<Leader>tR", ':lua require("tablemd").insertRow(true)<cr>', { noremap = true })
