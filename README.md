@@ -11,6 +11,9 @@ Neovim plugin to help with markdown tables.
 | \<Leader\>tf | Format the table                      |
 | \<Leader\>tR | Add row above the current line        |
 | \<Leader\>tr | Add row below the current line        |
+| \<Leader\>tj | Align column to the left              |
+| \<Leader\>tk | Center column                         |
+| \<Leader\>tl | Align column to the right             |
 
 Until I can figure out how to assign these keybindings only to markdown files, just add the following to your `after/ftplugin/markdown.lua` file. Of course, you can change these to whatever keybindings you like.
 
@@ -20,6 +23,9 @@ vim.api.nvim_set_keymap("n", "<Leader>tc", ':lua require("tablemd").insertColumn
 vim.api.nvim_set_keymap("n", "<Leader>td", ':lua require("tablemd").deleteColumn()<cr>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<Leader>tr", ':lua require("tablemd").insertRow(false)<cr>', { noremap = true })
 vim.api.nvim_set_keymap("n", "<Leader>tR", ':lua require("tablemd").insertRow(true)<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tj", ':lua require("tablemd").alignColumn("left")<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tk", ':lua require("tablemd").alignColumn("center")<cr>', { noremap = true })
+vim.api.nvim_set_keymap("n", "<Leader>tl", ':lua require("tablemd").alignColumn("right")<cr>', { noremap = true })
 ```
 
 ## Developing
