@@ -11,6 +11,7 @@ local table_md = require('tablemd.tablemd')
 return {
     format = table_md.formatTable,
     help = table_md.help,
+    alignColumn = table_md.alignColumn,
     deleteColumn = table_md.deleteColumn,
     insertColumn = table_md.insertColumn,
     insertRow = table_md.insertRow

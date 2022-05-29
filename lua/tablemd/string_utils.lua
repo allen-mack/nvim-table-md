@@ -26,8 +26,8 @@ function M.pad_string(input, len, alignment)
     -- For uneven splits, put the extra space on the right side of the string.
     if alignment == 'center' then
         if space_count > 0 then
-            local left_spaces = math.floor(space_count / 2)
-            local right_spaces = space_count - left_spaces
+            left_spaces = math.floor(space_count / 2)
+            right_spaces = space_count - left_spaces
         end
     end
 

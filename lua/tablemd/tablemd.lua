@@ -29,6 +29,61 @@ function M.formatTable()
 end
 
 --[[--
+Aligns the column. Possible values for alignment are "left", "right", and "center".
+]]
+function M.alignColumn(alignment)
+    -- Don't do anything if the alignment value isn't one of the predefined values.
+    if not (alignment == "left" or alignment == "right" or alignment == "center") then
+        return
+    end
+
+    local start_line = nil
+    local end_line = nil
+    local cursor_location = vim.api.nvim_win_get_cursor(0)
+
+    -- Get the range of lines to format
+    start_line, end_line = tu.get_table_range(cursor_location[1])
+
+    -- Get column definitions
+    local col_defs = tu.get_column_defs(start_line, end_line)
+
+    -- Get the current column index
+    local current_col = tu.get_current_column_index()
+
+    -- Get the second line
+    local line = su.trim_string(vim.api.nvim_buf_get_lines(0, start_line, start_line+1, false)[1])
+    local t = su.split_string(line, "|")
+
+    -- Rebuild the line
+    local new_line = "|"
+    local table_len = 0
+    for _ in pairs(t) do table_len = table_len + 1 end
+
+    for i = 1, table_len do
+        if i ~= current_col then
+            new_line = new_line .. su.trim_string(t[i]) .. " | "
+        else 
+            if alignment == "left" then
+                new_line = new_line .. "--- | "
+            end
+
+            if alignment == "right" then
+                new_line = new_line .. "---: | "
+            end
+
+            if alignment == "center" then
+                new_line = new_line .. ":---: | "
+            end
+        end
+    end
+
+    -- replace the line with the formatted line in the buffer
+    vim.api.nvim_buf_set_lines(0, start_line, start_line+1, false, {new_line})
+
+    M.formatTable()
+end
+
+--[[--
 Deletes the current column from the table.
 ]]
 function M.deleteColumn()
@@ -164,6 +219,7 @@ function M.setKeyMap()
     vim.api.nvim_set_keymap("n", "<Leader>td", ':lua require("tablemd").deleteColumn()<cr>', { noremap = true })
     vim.api.nvim_set_keymap("n", "<Leader>tr", ':lua require("tablemd").insertRow(false)<cr>', { noremap = true })
     vim.api.nvim_set_keymap("n", "<Leader>tR", ':lua require("tablemd").insertRow(true)<cr>', { noremap = true })
+    vim.api.nvim_set_keymap("n", "<Leader>tk", ':lua require("tablemd").alignColumn("center")<cr>', { noremap = true })
 end
 
 function M.help()
